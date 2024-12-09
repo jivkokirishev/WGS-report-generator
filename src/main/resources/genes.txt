@@ -1,81 +1,81 @@
-APC, AD, Familial adenomatous polyposis (FAP), 175100
-RET, AD, Familial medullary thyroid cancer/Multiple endocrine neoplasia 2, 155240; 171400; 162300
-BRCA1, AD, Hereditary breast and/or ovarian cancer, 604370
-BRCA2, AD, Hereditary breast and/or ovarian cancer, 612555
-PALB2, AD, Hereditary breast and/or ovarian cancer, 114480
-SDHD, AD, Hereditary paraganglioma-pheochromocytoma syndrome, 168000
-SDHAF2, AD, Hereditary paraganglioma-pheochromocytoma syndrome, 601650
-SDHC, AD, Hereditary paraganglioma-pheochromocytoma syndrome, 605373
-SDHB, AD, Hereditary paraganglioma-pheochromocytoma syndrome, 115310
-MAX, AD, Hereditary paraganglioma-pheochromocytoma syndrome, 171300
-TMEM127, AD, Hereditary paraganglioma-pheochromocytoma syndrome, 171300
-BMPR1A, AD, Juvenile polyposis syndrome (JPS), 174900
-SMAD4, AD, Juvenile polyposis syndrome (JPS)/Hereditary hemorrhagic telangiectasia syndrome, 175050
-TP53, AD, Li-Fraumeni syndrome, 151623
-MLH1, AD, Lynch syndrome (Hereditary Nonpolyposis Colorectal Cancer; HNPCC), 609310
-MSH2, AD, Lynch syndrome (Hereditary Nonpolyposis Colorectal Cancer; HNPCC), 120435
-MSH6, AD, Lynch syndrome (Hereditary Nonpolyposis Colorectal Cancer; HNPCC), 614350
-PMS2, AD, Lynch syndrome (Hereditary Nonpolyposis Colorectal Cancer; HNPCC), 614337
-MEN1, AD, Multiple endocrine neoplasia type 1, 131100
-MUTYH, AR, MUTYH-associated polyposis (MAP), 608456
-NF2, AD, NF2-related schwannomatosis, 101000
-STK11, AD, Peutz-Jeghers syndrome (PJS), 175200
-PTEN, AD, PTEN hamartoma tumor syndrome, 158350
-RB1, AD, Retinoblastoma, 180200
-TSC1, AD, Tuberous sclerosis complex, 191100
-TSC2, AD, Tuberous sclerosis complex, 613254
-VHL, AD, von Hippel-Lindau syndrome, 193300
-WT1, AD, WT1-related Wilms tumor, 194070
-FBN1, AD, Aortopathies, 154700
-TGFBR1, AD, Aortopathies, 609192
-TGFBR2, AD, Aortopathies, 610168
-SMAD3, AD, Aortopathies, 613795
-ACTA2, AD, Aortopathies, 611788
-MYH11, AD, Aortopathies, 132900
-PKP2, AD, Arrhythmogenic right ventricular cardiomyopathy (a subcategory of Arrhythmogenic Cardiomyopathy or ACM), 609040
-DSP, AD, Arrhythmogenic right ventricular cardiomyopathy (a subcategory of Arrhythmogenic Cardiomyopathy or ACM), 607450
-DSC2, AD, Arrhythmogenic right ventricular cardiomyopathy (a subcategory of Arrhythmogenic Cardiomyopathy or ACM), 610476
-TMEM43, AD, Arrhythmogenic right ventricular cardiomyopathy (a subcategory of Arrhythmogenic Cardiomyopathy or ACM), 604400
-DSG2, AD, Arrhythmogenic right ventricular cardiomyopathy (a subcategory of Arrhythmogenic Cardiomyopathy or ACM), 610193
-RYR2, AD, Catecholaminergic polymorphic ventricular tachycardia, 604772
-CASQ2, AR, Catecholaminergic polymorphic ventricular tachycardia, 611938
-TRDN, AR, Catecholaminergic polymorphic ventricular tachycardia, 615441
-TNNT2, AD, Dilated cardiomyopathy, 601494
-LMNA, AD, Dilated cardiomyopathy, 115200
-FLNC, AD, Dilated cardiomyopathy, 617047
-TTN, AD, Dilated cardiomyopathy, 604145
-BAG3, AD, Dilated cardiomyopathy, 613881
-DES, AD, Dilated cardiomyopathy, 604765
-RBM20, AD, Dilated cardiomyopathy, 613172
-TNNC1, AD, Dilated cardiomyopathy, 611879
-COL3A1, AD, Ehlers-Danlos syndrome, vascular type, 130050
-LDLR, SD, Familial hypercholesterolemia, 143890
-APOB, AD, Familial hypercholesterolemia, 144010
-PCSK9, AD, Familial hypercholesterolemia, 603776
-MYH7, AD, Hypertrophic cardiomyopathy, 192600
-MYBPC3, AD, Hypertrophic cardiomyopathy, 115197
-TNNI3, AD, Hypertrophic cardiomyopathy, 613690
-TPM1, AD, Hypertrophic cardiomyopathy, 115196
-MYL3, AD, Hypertrophic cardiomyopathy, 608751
-ACTC1, AD, Hypertrophic cardiomyopathy, 612098
-PRKAG2, AD, Hypertrophic cardiomyopathy, 600858
-MYL2, AD, Hypertrophic cardiomyopathy, 608758
-KCNQ1, AD, Long QT syndrome types 1 and 2, 192500
-KCNH2, AD, Long QT syndrome types 1 and 2, 613688
-SCN5A, AD, Long QT syndrome 3; Brugada syndrome, 603830; 601144
-CALM1, AD, Long QT syndrome types 14–16, 616247
-CALM2, AD, Long QT syndrome types 14–16, 616249
-CALM3, AD, Long QT syndrome types 14–16, 618782
-BTD, AR, Biotinidase deficiency, 253260
-GLA, XL, Fabry disease, 301500
-OTC, XL, Ornithine transcarbamylase deficiency, 311250
-GAA, AR, Pompe disease, 232300
-HFE, AR, Hereditary hemochromatosis, 235200
-ACVRL1, AD, Hereditary hemorrhagic telangiectasia, 600376
-ENG, AD, Hereditary hemorrhagic telangiectasia, 187300
-RYR1, AD, Malignant hyperthermia, 145600
-CACNA1S, AD, Malignant hyperthermia, 601887
-HNF1A, AD, Maturity-Onset of Diabetes of the Young, 600496
-RPE65, AR, RPE65-related retinopathy, 204100; 613794
-ATP7B, AR, Wilson disease, 277900
-TTR, AD, Hereditary TTR (transthyretin) amyloidosis, 105210
+APC,AD,Familial adenomatous polyposis (FAP),175100
+RET,AD,Familial medullary thyroid cancer/Multiple endocrine neoplasia 2,155240; 171400; 162300
+BRCA1,AD,Hereditary breast and/or ovarian cancer,604370
+BRCA2,AD,Hereditary breast and/or ovarian cancer,612555
+PALB2,AD,Hereditary breast and/or ovarian cancer,114480
+SDHD,AD,Hereditary paraganglioma-pheochromocytoma syndrome,168000
+SDHAF2,AD,Hereditary paraganglioma-pheochromocytoma syndrome,601650
+SDHC,AD,Hereditary paraganglioma-pheochromocytoma syndrome,605373
+SDHB,AD,Hereditary paraganglioma-pheochromocytoma syndrome,115310
+MAX,AD,Hereditary paraganglioma-pheochromocytoma syndrome,171300
+TMEM127,AD,Hereditary paraganglioma-pheochromocytoma syndrome,171300
+BMPR1A,AD,Juvenile polyposis syndrome (JPS),174900
+SMAD4,AD,Juvenile polyposis syndrome (JPS)/Hereditary hemorrhagic telangiectasia syndrome,175050
+TP53,AD,Li-Fraumeni syndrome,151623
+MLH1,AD,Lynch syndrome (Hereditary Nonpolyposis Colorectal Cancer; HNPCC),609310
+MSH2,AD,Lynch syndrome (Hereditary Nonpolyposis Colorectal Cancer; HNPCC),120435
+MSH6,AD,Lynch syndrome (Hereditary Nonpolyposis Colorectal Cancer; HNPCC),614350
+PMS2,AD,Lynch syndrome (Hereditary Nonpolyposis Colorectal Cancer; HNPCC),614337
+MEN1,AD,Multiple endocrine neoplasia type 1,131100
+MUTYH,AR,MUTYH-associated polyposis (MAP),608456
+NF2,AD,NF2-related schwannomatosis,101000
+STK11,AD,Peutz-Jeghers syndrome (PJS),175200
+PTEN,AD,PTEN hamartoma tumor syndrome,158350
+RB1,AD,Retinoblastoma,180200
+TSC1,AD,Tuberous sclerosis complex,191100
+TSC2,AD,Tuberous sclerosis complex,613254
+VHL,AD,von Hippel-Lindau syndrome,193300
+WT1,AD,WT1-related Wilms tumor,194070
+FBN1,AD,Aortopathies,154700
+TGFBR1,AD,Aortopathies,609192
+TGFBR2,AD,Aortopathies,610168
+SMAD3,AD,Aortopathies,613795
+ACTA2,AD,Aortopathies,611788
+MYH11,AD,Aortopathies,132900
+PKP2,AD,Arrhythmogenic right ventricular cardiomyopathy (a subcategory of Arrhythmogenic Cardiomyopathy or ACM),609040
+DSP,AD,Arrhythmogenic right ventricular cardiomyopathy (a subcategory of Arrhythmogenic Cardiomyopathy or ACM),607450
+DSC2,AD,Arrhythmogenic right ventricular cardiomyopathy (a subcategory of Arrhythmogenic Cardiomyopathy or ACM),610476
+TMEM43,AD,Arrhythmogenic right ventricular cardiomyopathy (a subcategory of Arrhythmogenic Cardiomyopathy or ACM),604400
+DSG2,AD,Arrhythmogenic right ventricular cardiomyopathy (a subcategory of Arrhythmogenic Cardiomyopathy or ACM),610193
+RYR2,AD,Catecholaminergic polymorphic ventricular tachycardia,604772
+CASQ2,AR,Catecholaminergic polymorphic ventricular tachycardia,611938
+TRDN,AR,Catecholaminergic polymorphic ventricular tachycardia,615441
+TNNT2,AD,Dilated cardiomyopathy,601494
+LMNA,AD,Dilated cardiomyopathy,115200
+FLNC,AD,Dilated cardiomyopathy,617047
+TTN,AD,Dilated cardiomyopathy,604145
+BAG3,AD,Dilated cardiomyopathy,613881
+DES,AD,Dilated cardiomyopathy,604765
+RBM20,AD,Dilated cardiomyopathy,613172
+TNNC1,AD,Dilated cardiomyopathy,611879
+COL3A1,AD,Ehlers-Danlos syndrome,vascular type,130050
+LDLR,SD,Familial hypercholesterolemia,143890
+APOB,AD,Familial hypercholesterolemia,144010
+PCSK9,AD,Familial hypercholesterolemia,603776
+MYH7,AD,Hypertrophic cardiomyopathy,192600
+MYBPC3,AD,Hypertrophic cardiomyopathy,115197
+TNNI3,AD,Hypertrophic cardiomyopathy,613690
+TPM1,AD,Hypertrophic cardiomyopathy,115196
+MYL3,AD,Hypertrophic cardiomyopathy,608751
+ACTC1,AD,Hypertrophic cardiomyopathy,612098
+PRKAG2,AD,Hypertrophic cardiomyopathy,600858
+MYL2,AD,Hypertrophic cardiomyopathy,608758
+KCNQ1,AD,Long QT syndrome types 1 and 2,192500
+KCNH2,AD,Long QT syndrome types 1 and 2,613688
+SCN5A,AD,Long QT syndrome 3; Brugada syndrome,603830; 601144
+CALM1,AD,Long QT syndrome types 14–16,616247
+CALM2,AD,Long QT syndrome types 14–16,616249
+CALM3,AD,Long QT syndrome types 14–16,618782
+BTD,AR,Biotinidase deficiency,253260
+GLA,XL,Fabry disease,301500
+OTC,XL,Ornithine transcarbamylase deficiency,311250
+GAA,AR,Pompe disease,232300
+HFE,AR,Hereditary hemochromatosis,235200
+ACVRL1,AD,Hereditary hemorrhagic telangiectasia,600376
+ENG,AD,Hereditary hemorrhagic telangiectasia,187300
+RYR1,AD,Malignant hyperthermia,145600
+CACNA1S,AD,Malignant hyperthermia,601887
+HNF1A,AD,Maturity-Onset of Diabetes of the Young,600496
+RPE65,AR,RPE65-related retinopathy,204100; 613794
+ATP7B,AR,Wilson disease,277900
+TTR,AD,Hereditary TTR (transthyretin) amyloidosis,105210
