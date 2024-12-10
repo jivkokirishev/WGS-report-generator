@@ -2,6 +2,7 @@ package org.genome;
 
 import org.dhatim.fastexcel.Workbook;
 import org.dhatim.fastexcel.Worksheet;
+import org.dhatim.fastexcel.reader.Cell;
 import org.dhatim.fastexcel.reader.ReadableWorkbook;
 import org.dhatim.fastexcel.reader.Row;
 import org.dhatim.fastexcel.reader.Sheet;
@@ -9,9 +10,7 @@ import org.dhatim.fastexcel.reader.Sheet;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -23,35 +22,42 @@ public class ReportGenerator {
         System.out.println("Enter WGS file path:");
         String WGSFilePath = scanner.nextLine();
         File initialFile = new File(WGSFilePath);
-        List<Row> filteredRows;
+        final List<Row> headerRows = new ArrayList<>(2);
+        final List<Row> filteredRows = new ArrayList<>();
         try (InputStream is = new FileInputStream(initialFile); ReadableWorkbook wb = new ReadableWorkbook(is)) {
             Sheet sheet = wb.getFirstSheet();
             try (Stream<Row> rows = sheet.openStream()) {
-                filteredRows = rows.skip(2)
-                        .filter(ReportGenerator::filterBySufficientDepth)
+                Iterator<Row> rowIterator = rows.iterator();
+                headerRows.add(rowIterator.next());
+                headerRows.add(rowIterator.next());
+                rowIterator.forEachRemaining(r -> Optional.of(r)
+                        .filter(ReportGenerator::filterBySufficientReadDepth)
                         .filter(ReportGenerator::filterByVariantAlleleFrequency)
                         .filter(ReportGenerator::filterByGnomadAltAlleleFreq)
                         .filter(ReportGenerator::filterByACMGClassification)
                         .filter(ReportGenerator::filterByGenePanel)
                         .filter(ReportGenerator::filterByGnomadZigosityDepeningOnInheritance)
-                        .toList();
+                        .ifPresent(filteredRows::add));
             }
         }
 
-        try (OutputStream os = new FileOutputStream("WGS Filtered");
+        try (OutputStream os = new FileOutputStream("WGS Filtered.xlsx");
              Workbook wb = new Workbook(os, "WGS Filtered", "1.0")) {
             Worksheet ws = wb.newWorksheet("Sheet 1");
 
-            for (int i = 0; i < filteredRows.size(); i++) {
-                for (int j = 0; j < filteredRows.get(i).getCellCount(); j++) {
-                    // TODO: Parse depending on cell type
-                    ws.value(i, j, filteredRows.get(i).getCell(j).getRawValue());
-                }
+            // Insert header rows
+            saveRowToWS(ws, 0, headerRows.get(0));
+            saveRowToWS(ws, 1, headerRows.get(1));
+
+            // Append filtered rows
+            for (int i = 2; i < filteredRows.size(); i++) {
+                saveRowToWS(ws, i, filteredRows.get(i));
+                // Include additional information about phenotypes and OMIM codes
             }
         }
     }
 
-    private static boolean filterBySufficientDepth(Row row) {
+    private static boolean filterBySufficientReadDepth(Row row) {
         return row.getCellAsNumber(6).filter(rd -> rd.longValue() > 20).isPresent();
     }
 
@@ -130,6 +136,24 @@ public class ReportGenerator {
                     .collect(Collectors.toMap(l -> l[0], l -> new Phenotype(l[2], l[1], l[3])));
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private static void saveRowToWS(Worksheet worksheet, int rowNum, Row row) {
+        for (int i = 0; i < row.getCellCount(); i++) {
+            saveCellToWS(worksheet, rowNum, i, row.getCell(i));
+        }
+    }
+
+    private static void saveCellToWS(Worksheet worksheet, int rowNum, int colNum, Cell cell) {
+        if (cell == null) {
+            return;
+        }
+
+        switch (cell.getType()) {
+            case STRING -> worksheet.value(rowNum, colNum, cell.asString());
+            case NUMBER -> worksheet.value(rowNum, colNum, cell.asNumber());
+            case BOOLEAN -> worksheet.value(rowNum, colNum, cell.asBoolean());
         }
     }
 
