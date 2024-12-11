@@ -49,10 +49,23 @@ public class ReportGenerator {
             saveRowToWS(ws, 0, headerRows.get(0));
             saveRowToWS(ws, 1, headerRows.get(1));
 
+            // Insert additional header rows
+            ws.value(0, headerRows.get(1).getCellCount(), "Additional information");
+            
+            ws.value(1, headerRows.get(1).getCellCount(), "OMIM Codes");
+            ws.value(1, headerRows.get(1).getCellCount() + 1, "Phenotype");
+
             // Append filtered rows
             for (int i = 2; i < filteredRows.size(); i++) {
                 saveRowToWS(ws, i, filteredRows.get(i));
                 // Include additional information about phenotypes and OMIM codes
+                Phenotype phenotype = filteredRows.get(i).getCellAsString(29)
+                        .map(geneToPhenotype::get)
+                        .orElse(null);
+                if (phenotype != null) {
+                    ws.value(i, headerRows.get(1).getCellCount(), phenotype.mimCodes());
+                    ws.value(i, headerRows.get(1).getCellCount() + 1, phenotype.name());
+                }
             }
         }
     }
