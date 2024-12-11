@@ -28,6 +28,9 @@ public class ExcelTransformer {
         String wgsFilePath = getWGSFilePath();
         String newFileLocation = getTransformedWGSFilePath();
 
+        System.out.println("Data is processed. Please wait ...");
+        long startTime = System.currentTimeMillis();
+
         ValuableRows rows;
         try (InputStream is = new FileInputStream(wgsFilePath); ReadableWorkbook wb = new ReadableWorkbook(is)) {
             Sheet sheet = wb.getFirstSheet();
@@ -40,6 +43,10 @@ public class ExcelTransformer {
 
             worksheetFiller.fillWorksheet(ws, rows);
         }
+
+        long estimatedTime = System.currentTimeMillis() - startTime;
+        System.out.println("The processing was successful. A new file was created.");
+        System.out.printf("Total processing time: %f seconds. \r", estimatedTime / 1000.0);
     }
 
     private String getWGSFilePath() {
@@ -53,14 +60,11 @@ public class ExcelTransformer {
     }
 
     private Map<String, Phenotype> loadGenesToPhenotypes() {
-        try {
-            InputStream stream = ExcelTransformer.class.getClassLoader().getResource("genes.csv").openStream();
+        InputStream stream = ExcelTransformer.class.getResourceAsStream("/genes.csv");
 
-            return new BufferedReader(new InputStreamReader(stream)).lines()
-                    .map(l -> l.split(","))
-                    .collect(Collectors.toMap(l -> l[0], l -> new Phenotype(l[2], l[1], l[3])));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return new BufferedReader(new InputStreamReader(stream)).lines()
+                .map(l -> l.split(","))
+                .collect(Collectors.toMap(l -> l[0], l -> new Phenotype(l[2], l[1], l[3])));
+
     }
 }
