@@ -1,11 +1,13 @@
 package org.genome;
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.dhatim.fastexcel.Workbook;
 import org.dhatim.fastexcel.Worksheet;
 import org.dhatim.fastexcel.reader.ReadableWorkbook;
 import org.dhatim.fastexcel.reader.Sheet;
 
 import java.io.*;
+import java.net.http.HttpClient;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -19,7 +21,9 @@ public class ExcelTransformer {
     public ExcelTransformer() {
         Map<String, Phenotype> genesToPhenotypes = loadGenesToPhenotypes();
         this.dataExtractor = new DataExtractor(genesToPhenotypes);
-        this.worksheetFiller = new WorksheetFiller(genesToPhenotypes);
+        this.worksheetFiller = new WorksheetFiller(
+                new ClinvarFetcher(HttpClient.newHttpClient(), new XmlMapper()),
+                genesToPhenotypes);
         this.scanner = new Scanner(System.in);
     }
 
