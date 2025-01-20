@@ -1,6 +1,9 @@
 package org.genome;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import java.io.IOException;
@@ -11,6 +14,7 @@ import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ClinvarFetcher {
@@ -26,23 +30,42 @@ public class ClinvarFetcher {
         HttpRequest request = getVariantRequest(clinvarVariantId);
         HttpResponse<String> clinvarResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        String rcvNumber = getRCVNumber(mapper.readTree(clinvarResponse.body()));
+        return getRCVNumbers(mapper.readTree(clinvarResponse.body())).stream()
+                .map(rcvNumber -> {
+                    try {
+                        return getVariantSummaryForRcvNumber(rcvNumber);
+                    } catch (IOException | InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .reduce((vs1, vs2) -> {
+                    vs1.summaries().addAll(vs2.summaries());
+                    return new VariantSummary(
+                        vs1.deceaseDefinition() == null || vs1.deceaseDefinition().isBlank()
+                                ? vs1.deceaseDefinition()
+                                : vs2.deceaseDefinition(),
+                            vs1.summaries());})
+                .orElse(new VariantSummary(null, Collections.emptyList()));
+    }
+
+    private VariantSummary getVariantSummaryForRcvNumber(String rcvNumber) throws IOException, InterruptedException {
         HttpRequest submissionsRequest = getSubmissionsRequest(rcvNumber);
         HttpResponse<String> submissionsResponse =
                 client.send(submissionsRequest, HttpResponse.BodyHandlers.ofString());
 
-        return getVariantSummary(mapper.readTree(submissionsResponse.body()));
+        return constructVariantSummary(mapper.readTree(submissionsResponse.body()));
     }
 
-    private String getRCVNumber(JsonNode responseTree) {
-        return responseTree
+    private List<String> getRCVNumbers(JsonNode responseTree) throws IOException {
+        ArrayNode rcvNumbers = responseTree
                 .path("DocumentSummarySet")
                 .path("DocumentSummary")
                 .path("supporting_submissions")
                 .path("rcv")
-                .path("string")
-                .asText();
+                .withArrayProperty("string");
 
+        ObjectReader reader = mapper.readerFor(new TypeReference<List<String>>() {});
+        return reader.readValue(rcvNumbers);
     }
 
     private HttpRequest getVariantRequest(String clinvarVariantId) {
@@ -59,7 +82,7 @@ public class ClinvarFetcher {
                 .build();
     }
 
-    private VariantSummary getVariantSummary(JsonNode responseTree) {
+    private VariantSummary constructVariantSummary(JsonNode responseTree) {
         String deceaseDefinition = getDeceaseDefinition(responseTree);
 
         List<PublicationSummary> publicationSummaries = new ArrayList<>();
@@ -113,7 +136,11 @@ public class ClinvarFetcher {
                 .path("DateUpdated")
                 .asText();
 
-        return LocalDate.parse(dateUpdated, dateFormatter);
+        try {
+            return LocalDate.parse(dateUpdated, dateFormatter);
+        } catch (Exception e) {
+            return LocalDate.MIN;
+        }
     }
 
     private String getClassification(JsonNode publication) {

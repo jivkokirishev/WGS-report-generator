@@ -37,41 +37,49 @@ public class DataExtractor {
 
 
     private boolean filterBySufficientReadDepth(Row row) {
-        return row.getCellAsNumber(6).filter(rd -> rd.longValue() > 20).isPresent();
+        // G := 6 column
+        return row.getCellAsNumber(columnToNumber("G"))
+                .filter(rd -> rd.longValue() > 20)
+                .isPresent();
     }
 
     // TODO: Figure out how to filter when having more than one value?
     // TODO: Do I need to know the difference between homozygous and heterozygous for the filtering part?
     private boolean filterByVariantAlleleFrequency(Row row) {
-        Optional<String> variantAlleleFrequency = row.getCellAsString(4);
+        // E := 4 column
+        Optional<String> variantAlleleFrequency = row.getCellAsString(columnToNumber("E"));
 
         if (variantAlleleFrequency
                 .filter(s -> s.contains(","))
                 .isPresent()) {
-            System.out.printf("There is a problem with position %s and reading %s, having vaf: %s",
-                    row.getCellText(0),
-                    row.getCellText(1),
-                    row.getCellText(4));
+            System.out.printf("There is a problem with position %s and reading %s, having vaf: %s%n",
+                    row.getCellText(columnToNumber("A")),
+                    row.getCellText(columnToNumber("B")),
+                    row.getCellText(columnToNumber("E")));
             return false;
         }
 
         return variantAlleleFrequency
-                .filter(s -> !s.contains(","))
+                .map(s -> s.split(","))
+                .filter(s -> Arrays.stream(s).count() == 1)
+                .map(s -> s[0])
+//                .filter(s -> !s.contains(","))
                 .map(Float::parseFloat)
                 .filter(vaf -> vaf > 0.25)
                 .isPresent();
     }
 
     private boolean filterByGnomadAltAlleleFreq(Row row) {
-        return row.getCellAsString(77)
+        // BZ := 77 column
+        return row.getCellAsString(columnToNumber("BZ"))
                 .map(Double::parseDouble)
                 .filter(aaf -> aaf < 0.05)
                 .isPresent();
     }
 
     private boolean filterBySequenceOntology(Row row) {
-        // 31 := AE column
-        return row.getCellAsString(31)
+        // AE := 30 column
+        return row.getCellAsString(columnToNumber("AE"))
                 .map(String::toLowerCase)
                 .filter(c -> c.contains("frameshift")
                         || c.contains("missense")
@@ -82,14 +90,13 @@ public class DataExtractor {
     }
 
     private boolean filterByClinvarAndACMGClassification(Row row) {
-        // 59 := BG column
-
-        String clinvarClassification = row.getCellAsString(59)
+        // BG := 58 column
+        String clinvarClassification = row.getCellAsString(columnToNumber("BG"))
                 .map(String::toLowerCase)
                 .orElse("");
 
-        // 114 := DK column
-        String acmgClassification = row.getCellAsString(114)
+        // DK:= 113 column
+        String acmgClassification = row.getCellAsString(columnToNumber("DK"))
                 .map(String::toLowerCase)
                 .orElse("");
 
@@ -105,23 +112,19 @@ public class DataExtractor {
             return false;
         }
 
-        // Ако в clinvar го няма, а в acmg е pathogenic  -> докладва СЕ
+        // Ако в clinvar го няма, а в acmg е pathogenic -> докладва СЕ
         if (clinvarClassification.isEmpty()
                 && (acmgClassification.contains("pathogenic")
                 || acmgClassification.contains("conflicting"))) {
             return true;
         }
 
-        // Ако в clinvar e патогенен, то най-вероятно и в acmg е pathogenic -> докладва СЕ без значение оценката в acmg
-        if (clinvarClassification.contains("pathogenic")) {
-            return true;
-        }
-
         // Ако в clinvar е conflicting, гледаме следващата колона и ако там ИМА pathogenic,
         // гледаме acmg и ако там има Pathogenic (или conflicting),
         // тогава можем да докладваме
+        // BH := 59 column
         if (clinvarClassification.contains("conflicting")) {
-            String aggregatedSubmissions = row.getCellAsString(60)
+            String aggregatedSubmissions = row.getCellAsString(columnToNumber("BH"))
                     .map(String::toLowerCase)
                     .orElse("");
 
@@ -130,43 +133,53 @@ public class DataExtractor {
                     || acmgClassification.contains("conflicting"));
         }
 
+        // Ако в clinvar e патогенен, то най-вероятно и в acmg е pathogenic -> докладва СЕ без значение оценката в acmg
+        if (clinvarClassification.contains("pathogenic")) {
+            return true;
+        }
+
         return false;
     }
 
     private boolean filterByGenePanel(Row row) {
-        return row.getCellAsString(29)
-                .filter(genesToPhenotypes::containsKey)
+        // AD := 29 column
+        return row.getCellAsString(columnToNumber("AD"))
+                .map(g -> g.split(","))
+                .filter(gs -> Arrays.stream(gs).anyMatch(genesToPhenotypes::containsKey))
                 .isPresent();
     }
 
     private boolean filterByGnomadZigosityDepeningOnInheritance(Row row) {
-        Phenotype phenotype = row.getCellAsString(29)
+        // AD := 29 column
+        Phenotype phenotype = row.getCellAsString(columnToNumber("AD"))
+                .flatMap(g -> Arrays.stream(g.split(",")).findFirst())
                 .map(genesToPhenotypes::get)
                 .orElse(null);
 
-        // TODO: How should I handle SD (Semi-Dominant) variants?
+        // CA := 78 column
         if (phenotype != null
                 && (phenotype.inheritance().equals("AR") || phenotype.inheritance().equals("SD"))
-                && row.getCellAsString(78)
+                && row.getCellAsString(columnToNumber("CA"))
                 .map(Integer::parseInt)
                 .filter(homCount -> homCount < 5)
                 .isEmpty()) {
             return false;
         }
 
+        // CA := 78 column
         if (phenotype != null
                 && phenotype.inheritance().equals("AD")
-                && row.getCellAsString(78)
+                && row.getCellAsString(columnToNumber("CA"))
                 .map(Integer::parseInt)
                 .filter(homCount -> homCount < 1)
                 .isEmpty()) {
             return false;
         }
 
-        // TODO: I'm filtering by hemizygous count the XL (X Linked) variants, is this correct?
+        // CB := 79 column
         if (phenotype != null
                 && phenotype.inheritance().equals("XL")
-                && row.getCellAsString(79)
+                && row.getCellAsString(columnToNumber("CB"))
                 .map(Integer::parseInt)
                 .filter(hemCount -> hemCount < 1)
                 .isEmpty()) {

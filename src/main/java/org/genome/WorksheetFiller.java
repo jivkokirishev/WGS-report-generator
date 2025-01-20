@@ -51,32 +51,32 @@ public class WorksheetFiller {
             if (phenotype != null) {
                 ws.value(i, rows.headerRows().get(1).getCellCount(), phenotype.mimCodes());
                 ws.value(i, rows.headerRows().get(1).getCellCount() + 1, phenotype.name());
-
-                final int rowIndex = i;
-                rows.filteredRows().get(i).getCellAsString(57)
-                        .map(clinvarVariantId -> {
-                            try {
-                                return clinvarFetcher.fetchVariantSummary(clinvarVariantId);
-                            } catch (IOException | InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                        })
-                        .ifPresent(vs -> {
-                            ws.value(rowIndex, rows.headerRows().get(1).getCellCount() + 2, vs.deceaseDefinition());
-
-                            vs.summaries().stream()
-                                    .filter(s -> s.classification().equals("pathogenic"))
-                                    .filter(s -> !s.summary().isBlank())
-                                    .max(Comparator.comparing(PublicationSummary::dateUpdated))
-                                    .ifPresent(s -> {
-                                        ws.value(rowIndex, rows.headerRows().get(1).getCellCount() + 3, s.classification());
-                                        ws.value(rowIndex, rows.headerRows().get(1).getCellCount() + 4, s.dateUpdated());
-                                        ws.value(rowIndex, rows.headerRows().get(1).getCellCount() + 5, s.submitter());
-                                        ws.value(rowIndex, rows.headerRows().get(1).getCellCount() + 6, s.submittedAssembly());
-                                        ws.value(rowIndex, rows.headerRows().get(1).getCellCount() + 7, s.summary());
-                                    });
-                        });
             }
+
+            final int rowIndex = i;
+            rows.filteredRows().get(i).getCellAsString(57)
+                    .map(clinvarVariantId -> {
+                        try {
+                            return clinvarFetcher.fetchVariantSummary(clinvarVariantId);
+                        } catch (IOException | InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    })
+                    .ifPresent(vs -> {
+                        ws.value(rowIndex, rows.headerRows().get(1).getCellCount() + 2, vs.deceaseDefinition());
+
+                        vs.summaries().stream()
+                                .filter(s -> s.classification().toLowerCase().contains("pathogenic"))
+                                .filter(s -> !s.summary().isBlank())
+                                .max(Comparator.comparing(PublicationSummary::dateUpdated))
+                                .ifPresent(s -> {
+                                    ws.value(rowIndex, rows.headerRows().get(1).getCellCount() + 3, s.classification());
+                                    ws.value(rowIndex, rows.headerRows().get(1).getCellCount() + 4, s.dateUpdated().toString());
+                                    ws.value(rowIndex, rows.headerRows().get(1).getCellCount() + 5, s.submitter());
+                                    ws.value(rowIndex, rows.headerRows().get(1).getCellCount() + 6, s.submittedAssembly());
+                                    ws.value(rowIndex, rows.headerRows().get(1).getCellCount() + 7, s.summary());
+                                });
+                    });
         }
     }
 
